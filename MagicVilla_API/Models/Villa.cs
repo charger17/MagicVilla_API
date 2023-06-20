@@ -24,7 +24,7 @@ namespace MagicVilla_API.Models
 
         public string Amenidad { get; set; }
 
-        public DateTime FechaCreacion { get; set; }
+        public DateTime FechaCreacion { get; set; } = DateTime.Now;
 
         public DateTime FechaActualiazcion { get; set; }
     }
