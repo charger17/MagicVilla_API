@@ -10,7 +10,7 @@ namespace MagicVilla_API.Repository.IRepository
 
         Task<T> Obtener(Expression<Func<T, bool>> filtro = null, bool tracked = true);
 
-        Task<T> Remover(T entity);
+        Task Remover(T entity);
 
         Task Grabar();
     }

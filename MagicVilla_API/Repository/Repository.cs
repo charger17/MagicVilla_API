@@ -50,7 +50,7 @@ namespace MagicVilla_API.Repository
             return await query.ToListAsync();
         }
 
-        public async Task<T> Remover(T entity)
+        public async Task Remover(T entity)
         {
             dbSet.Remove(entity);
             await Grabar();
