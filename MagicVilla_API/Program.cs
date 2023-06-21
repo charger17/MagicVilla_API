@@ -13,12 +13,12 @@ builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IVillaRepository, VillaRepository>();
+builder.Services.AddScoped<INumeroVillaRepository, NumeroVillaRepository>();
 
 //agregar cadena de dbcontext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-
 });
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 
