@@ -29,6 +29,7 @@ namespace MagicVilla_API.Controllers
             _numeroVillaRepository = numeroVillaRepository;
         }
 
+        [MapToApiVersion("1.0")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<APIResponse>> GetNumeroVillas()
