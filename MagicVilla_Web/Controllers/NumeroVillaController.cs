@@ -66,6 +66,7 @@ namespace MagicVilla_Web.Controllers
 
                 if (response is not null && response.IsExitoso)
                 {
+                    TempData["exitoso"] = "Numero de Villa Almacenado Exitosamente";
                     return RedirectToAction(nameof(IndexNumerovilla));
                 }
                 else
@@ -128,6 +129,8 @@ namespace MagicVilla_Web.Controllers
 
                 if (response is not null && response.IsExitoso)
                 {
+                    TempData["exitoso"] = "Numero de Villa Actualizado Exitosamente";
+
                     return RedirectToAction(nameof(IndexNumerovilla));
                 }
                 else
@@ -187,8 +190,11 @@ namespace MagicVilla_Web.Controllers
 
             if(response is not null && response.IsExitoso)
             {
+                TempData["exitoso"] = "Numero de Villa Eliminado Exitosamente";
+
                 return RedirectToAction(nameof(IndexNumerovilla));
             }
+            TempData["error"] = "Algo sucedio";
 
             return View(modelo);
         }
