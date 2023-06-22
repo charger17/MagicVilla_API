@@ -6,6 +6,7 @@ using MagicVilla_Web.Services.IServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace MagicVilla_Web.Controllers
 {
@@ -116,6 +117,40 @@ namespace MagicVilla_Web.Controllers
             }
 
             return NotFound();  
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ActualizarNumeroVilla (NumeroVillaUpdateViewModel modelo)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await _numeroVillaService.Actualizar<APIResponse>(modelo.NumeroVilla);
+
+                if (response is not null && response.IsExitoso)
+                {
+                    return RedirectToAction(nameof(IndexNumerovilla));
+                }
+                else
+                {
+                    if (response.ErrorMessages.Count > 0)
+                    {
+                        ModelState.AddModelError("ErrorMessage", response.ErrorMessages.FirstOrDefault());
+                    }
+                }
+            }
+
+            var res = await _villaService.ObtenerTodos<APIResponse>();
+
+            if (res is not null && res.IsExitoso)
+            {
+                modelo.VillaList = JsonConvert.DeserializeObject<List<VillaDto>>(Convert.ToString(res.Resultado)).Select(v => new SelectListItem
+                {
+                    Text = v.Nombre,
+                    Value = v.Id.ToString()
+                });
+            }
+
+            return View(modelo);
         }
     }
 }
