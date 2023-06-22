@@ -20,8 +20,10 @@ namespace MagicVilla_Web.Models.Dto
         public int Ocupantes { get; set; }
 
         [Required]
+        [Display(Name = "Metros Cuadrados")]
         public double MetrosCuadrados { get; set; }
-        [Required]
+
+        [Display(Name = "Imagen")]
         public string ImagenUrl { get; set; }
 
         public string Amenidad { get; set; }
