@@ -181,34 +181,13 @@ namespace MagicVilla_Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RemoverNumeroVilla(NumeroVillaUpdateViewModel modelo)
+        public async Task<IActionResult> RemoverNumeroVilla(NumeroVillaDeleteViewModel modelo)
         {
-            if (ModelState.IsValid)
+            var response = await _numeroVillaService.Remover<APIResponse>(modelo.NumeroVilla.VillaNo);
+
+            if(response is not null && response.IsExitoso)
             {
-                var response = await _numeroVillaService.Actualizar<APIResponse>(modelo.NumeroVilla);
-
-                if (response is not null && response.IsExitoso)
-                {
-                    return RedirectToAction(nameof(IndexNumerovilla));
-                }
-                else
-                {
-                    if (response.ErrorMessages.Count > 0)
-                    {
-                        ModelState.AddModelError("ErrorMessage", response.ErrorMessages.FirstOrDefault());
-                    }
-                }
-            }
-
-            var res = await _villaService.ObtenerTodos<APIResponse>();
-
-            if (res is not null && res.IsExitoso)
-            {
-                modelo.VillaList = JsonConvert.DeserializeObject<List<VillaDto>>(Convert.ToString(res.Resultado)).Select(v => new SelectListItem
-                {
-                    Text = v.Nombre,
-                    Value = v.Id.ToString()
-                });
+                return RedirectToAction(nameof(IndexNumerovilla));
             }
 
             return View(modelo);
