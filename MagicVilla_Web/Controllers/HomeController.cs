@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MagicVilla_Utilites;
 using MagicVilla_Web.Models;
 using MagicVilla_Web.Models.Dto;
 using MagicVilla_Web.Services.IServices;
@@ -23,6 +24,7 @@ namespace MagicVilla_Web.Controllers
 
         public async Task< IActionResult> Index()
         {
+            
             List<VillaDto> villaList = new();
 
             var response = await _villaService.ObtenerTodos<APIResponse>();

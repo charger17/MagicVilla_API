@@ -1,4 +1,5 @@
-﻿using MagicVilla_Utilites;
+﻿using Humanizer;
+using MagicVilla_Utilites;
 using MagicVilla_Web.Models;
 using MagicVilla_Web.Services.IServices;
 using Newtonsoft.Json;
@@ -55,8 +56,15 @@ namespace MagicVilla_Web.Services
 
                 try
                 {
-                    APIResponse  response= JsonConvert.DeserializeObject<APIResponse>(apiContent);
-                    if (response.statusCode == HttpStatusCode.BadRequest || (response.statusCode == HttpStatusCode.NotFound))
+                    APIResponse response = JsonConvert.DeserializeObject<APIResponse>(apiContent);
+
+                    if (response is null)
+                    {
+                        var errorResponse = JsonConvert.DeserializeObject<T>(apiContent);
+                        return errorResponse;
+                    }
+
+                    if ((response.statusCode == HttpStatusCode.BadRequest) || (response.statusCode == HttpStatusCode.NotFound) )
                     {
                         response.statusCode = HttpStatusCode.BadRequest;
                         response.IsExitoso = false;
