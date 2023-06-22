@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace MagicVilla_API.Controllers
+namespace MagicVilla_API.Controllers.v2
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [ApiVersion("2.0")]
     public class VillaController : ControllerBase
     {
         private readonly ILogger<VillaController> _logger;
@@ -180,7 +181,7 @@ namespace MagicVilla_API.Controllers
         {
             try
             {
-                if (updateDto is null || (id != updateDto.Id))
+                if (updateDto is null || id != updateDto.Id)
                 {
                     _response.IsExitoso = false;
                     _response.statusCode = HttpStatusCode.BadRequest;
@@ -211,7 +212,7 @@ namespace MagicVilla_API.Controllers
         {
             try
             {
-                if (patchDto is null || (id == 0))
+                if (patchDto is null || id == 0)
                 {
                     _response.IsExitoso = false;
                     _response.statusCode = HttpStatusCode.BadRequest;

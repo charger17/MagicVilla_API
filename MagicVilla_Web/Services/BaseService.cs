@@ -71,7 +71,7 @@ namespace MagicVilla_Web.Services
                         return errorResponse;
                     }
 
-                    if ((response.statusCode == HttpStatusCode.BadRequest) || (response.statusCode == HttpStatusCode.NotFound) )
+                    if  ((response.statusCode == HttpStatusCode.BadRequest) || (response.statusCode == HttpStatusCode.NotFound) )
                     {
                         response.statusCode = HttpStatusCode.BadRequest;
                         response.IsExitoso = false;

@@ -21,7 +21,7 @@ namespace MagicVilla_Web.Services
             {
                 APITipo = DS.APITipo.POST,
                 Datos = dto,
-                Url = _villUrl +"/api/usuario/login"
+                Url = _villUrl + "/api/v1/usuario/login"
             });
         }
 
@@ -31,7 +31,7 @@ namespace MagicVilla_Web.Services
             {
                 APITipo = DS.APITipo.POST,
                 Datos = dto,
-                Url = _villUrl + "/api/usuario/registrar"
+                Url = _villUrl + "/api/v1/usuario/registrar"
             });
         }
     }
