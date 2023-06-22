@@ -1,8 +1,10 @@
-﻿using MagicVilla_Utilites;
+﻿using Humanizer;
+using MagicVilla_Utilites;
 using MagicVilla_Web.Models;
 using MagicVilla_Web.Services.IServices;
 using Newtonsoft.Json;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace MagicVilla_Web.Services
@@ -50,13 +52,26 @@ namespace MagicVilla_Web.Services
                 }
 
                 HttpResponseMessage apiResponse = null;
+
+                if (!string.IsNullOrEmpty(apiRequest.Token))
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiRequest.Token);
+                }
+
                 apiResponse = await client.SendAsync(message);
                 var apiContent = await apiResponse.Content.ReadAsStringAsync();
 
                 try
                 {
-                    APIResponse  response= JsonConvert.DeserializeObject<APIResponse>(apiContent);
-                    if (response.statusCode == HttpStatusCode.BadRequest || (response.statusCode == HttpStatusCode.NotFound))
+                    APIResponse response = JsonConvert.DeserializeObject<APIResponse>(apiContent);
+
+                    if (response is null)
+                    {
+                        var errorResponse = JsonConvert.DeserializeObject<T>(apiContent);
+                        return errorResponse;
+                    }
+
+                    if ((response.statusCode == HttpStatusCode.BadRequest) || (response.statusCode == HttpStatusCode.NotFound) )
                     {
                         response.statusCode = HttpStatusCode.BadRequest;
                         response.IsExitoso = false;

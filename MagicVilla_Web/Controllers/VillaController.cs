@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MagicVilla_Utilites;
 using MagicVilla_Web.Models;
 using MagicVilla_Web.Models.Dto;
 using MagicVilla_Web.Services.IServices;
@@ -22,7 +23,7 @@ namespace MagicVilla_Web.Controllers
         {
             List<VillaDto> villaList = new();
 
-            var response = await _villaService.ObtenerTodos<APIResponse>();
+            var response = await _villaService.ObtenerTodos<APIResponse>(HttpContext.Session.GetString(DS.Seesiontoken));
 
             if (response != null && response.IsExitoso)
             {
@@ -44,7 +45,7 @@ namespace MagicVilla_Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var response = await _villaService.Crear<APIResponse>(modelo);
+                var response = await _villaService.Crear<APIResponse>(modelo, HttpContext.Session.GetString(DS.Seesiontoken));
                 if (response is not null && response.IsExitoso)
                 {
                     TempData["exitoso"] = "Villa Creada Exitosamente";
@@ -57,7 +58,7 @@ namespace MagicVilla_Web.Controllers
         [HttpGet]
         public async Task<IActionResult> ActualizarVilla(int id)
         {
-            var response = await _villaService.Obtener<APIResponse>(id);
+            var response = await _villaService.Obtener<APIResponse>(id, HttpContext.Session.GetString(DS.Seesiontoken));
 
             if (response != null && response.IsExitoso)
             {
@@ -75,7 +76,7 @@ namespace MagicVilla_Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var response = await _villaService.Actualziar<APIResponse>(dto);
+                var response = await _villaService.Actualziar<APIResponse>(dto, HttpContext.Session.GetString(DS.Seesiontoken));
 
                 if (response is not null && response.IsExitoso)
                 {
@@ -90,7 +91,7 @@ namespace MagicVilla_Web.Controllers
         [HttpGet]
         public async Task<IActionResult> RemoverVilla(int id)
         {
-            var response = await _villaService.Obtener<APIResponse>(id);
+            var response = await _villaService.Obtener<APIResponse>(id, HttpContext.Session.GetString(DS.Seesiontoken));
 
             if (response != null && response.IsExitoso)
             {
@@ -106,7 +107,7 @@ namespace MagicVilla_Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoverVilla(VillaDto dto)
         {
-            var response = await _villaService.Remover<APIResponse>(dto.Id);
+            var response = await _villaService.Remover<APIResponse>(dto.Id, HttpContext.Session.GetString(DS.Seesiontoken));
 
             if (response is not null && response.IsExitoso)
             {
