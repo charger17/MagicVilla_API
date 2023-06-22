@@ -14,6 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IVillaRepository, VillaRepository>();
 builder.Services.AddScoped<INumeroVillaRepository, NumeroVillaRepository>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
 //agregar cadena de dbcontext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
