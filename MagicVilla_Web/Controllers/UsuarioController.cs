@@ -1,7 +1,11 @@
-﻿using MagicVilla_Web.Models;
+﻿using MagicVilla_Utilites;
+using MagicVilla_Web.Models;
 using MagicVilla_Web.Models.Dto;
 using MagicVilla_Web.Services.IServices;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using NuGet.Protocol.Plugins;
 
 namespace MagicVilla_Web.Controllers
 {
@@ -22,9 +26,24 @@ namespace MagicVilla_Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(LoginRequestDto modelo)
+        public async Task<IActionResult> Login(LoginRequestDto modelo)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                var response = await _usuarioService.Login<APIResponse>(modelo);
+
+                if (response is not null && response.IsExitoso)
+                {
+                    LoginResponseDto loginResponse = JsonConvert.DeserializeObject<LoginResponseDto>(Convert.ToString(response.Resultado));
+
+                    HttpContext.Session.SetString(DS.Seesiontoken, loginResponse.Token);
+                    return RedirectToAction("Index", "Home");
+                }
+            
+                    ModelState.AddModelError("ErroMessage", response.ErrorMessages.FirstOrDefault());
+            }
+
+            return View(modelo);
         }
 
         public IActionResult Registrar()
@@ -48,9 +67,11 @@ namespace MagicVilla_Web.Controllers
             return View(modelo);
         }
 
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
-            return View();
+            await HttpContext.SignOutAsync();
+            HttpContext.Session.SetString(DS.Seesiontoken, "");
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult AccesoDenegado()
