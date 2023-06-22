@@ -6,12 +6,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace MagicVilla_API.Controllers
+namespace MagicVilla_API.Controllers.v1
 {
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
-    [ApiVersion("2.0")]
     public class NumeroVillaController : ControllerBase
     {
         private readonly ILogger<NumeroVillaController> _logger;
@@ -29,7 +28,6 @@ namespace MagicVilla_API.Controllers
             _numeroVillaRepository = numeroVillaRepository;
         }
 
-        [MapToApiVersion("1.0")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<APIResponse>> GetNumeroVillas()
@@ -50,13 +48,6 @@ namespace MagicVilla_API.Controllers
                 _response.statusCode = HttpStatusCode.BadRequest;
             }
             return Ok(_response);
-        }
-
-        [MapToApiVersion("2.0")]
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "Valor1", "Valor2" };
         }
 
         [HttpGet("{id:int}", Name = "GetNumeroVilla")]
