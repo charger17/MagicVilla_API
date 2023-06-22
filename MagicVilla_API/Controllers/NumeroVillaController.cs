@@ -2,12 +2,13 @@
 using MagicVilla_API.Models;
 using MagicVilla_API.Models.Dto;
 using MagicVilla_API.Repository.IRepository;
-using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace MagicVilla_API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class NumeroVillaController : ControllerBase
@@ -35,7 +36,7 @@ namespace MagicVilla_API.Controllers
             {
                 _logger.LogInformation("Obtener Numero de villas");
 
-                IEnumerable<NumeroVilla> numeroVillasList = await _numeroVillaRepository.Obtenertodos();
+                IEnumerable<NumeroVilla> numeroVillasList = await _numeroVillaRepository.Obtenertodos(includeProperties: "Villa");
 
                 _response.Resultado = _mapper.Map<IEnumerable<NumeroVillaDto>>(numeroVillasList);
                 _response.statusCode = HttpStatusCode.OK;
@@ -66,7 +67,7 @@ namespace MagicVilla_API.Controllers
                     return _response;
                 }
 
-                var numeroVilla = await _numeroVillaRepository.Obtener(x => x.VillaNo.Equals(id), tracked: false);
+                var numeroVilla = await _numeroVillaRepository.Obtener(x => x.VillaNo.Equals(id), tracked: false, includeProperties: "Villa");
 
                 if (numeroVilla is null)
                 {
@@ -106,7 +107,10 @@ namespace MagicVilla_API.Controllers
                 if (await _numeroVillaRepository.Obtener(v => v.VillaNo.Equals(createDto.VillaNo), tracked: false) != null)
                 {
                     ModelState.AddModelError("NombreExiste", "La villa con ese numero ya Existe");
-                    return BadRequest(ModelState);
+                    _response.statusCode = HttpStatusCode.BadRequest;
+                    _response.ErrorMessages = new List<string>() { "La villa con ese numero ya Existe" };
+                    _response.IsExitoso = false;
+                    return BadRequest(_response);
                 }
 
                 if (await _villaRepository.Obtener(v => v.Id.Equals(createDto.VillaId)) == null)

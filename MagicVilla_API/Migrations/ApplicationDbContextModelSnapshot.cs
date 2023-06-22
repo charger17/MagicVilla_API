@@ -28,7 +28,6 @@ namespace MagicVilla_API.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("DetallesEspeciales")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("FechaActualizacion")
@@ -47,6 +46,31 @@ namespace MagicVilla_API.Migrations
                     b.ToTable("NumeroVillas");
                 });
 
+            modelBuilder.Entity("MagicVilla_API.Models.Usuario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Nombres")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Rol")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Usuarios");
+                });
+
             modelBuilder.Entity("MagicVilla_API.Models.Villa", b =>
                 {
                     b.Property<int>("Id")
@@ -56,11 +80,9 @@ namespace MagicVilla_API.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Amenidad")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Detalle")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("FechaActualiazcion")
@@ -70,7 +92,6 @@ namespace MagicVilla_API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ImagenUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("MetrosCuadrados")
@@ -96,8 +117,8 @@ namespace MagicVilla_API.Migrations
                             Id = 1,
                             Amenidad = "",
                             Detalle = "Detalle de la villa...",
-                            FechaActualiazcion = new DateTime(2023, 6, 21, 17, 18, 9, 86, DateTimeKind.Local).AddTicks(4835),
-                            FechaCreacion = new DateTime(2023, 6, 21, 17, 18, 9, 86, DateTimeKind.Local).AddTicks(4825),
+                            FechaActualiazcion = new DateTime(2023, 6, 22, 10, 26, 53, 724, DateTimeKind.Local).AddTicks(7573),
+                            FechaCreacion = new DateTime(2023, 6, 22, 10, 26, 53, 724, DateTimeKind.Local).AddTicks(7560),
                             ImagenUrl = "",
                             MetrosCuadrados = 50.0,
                             Nombre = "Villa Real",
@@ -109,8 +130,8 @@ namespace MagicVilla_API.Migrations
                             Id = 2,
                             Amenidad = "",
                             Detalle = "Detalle de la villa...",
-                            FechaActualiazcion = new DateTime(2023, 6, 21, 17, 18, 9, 86, DateTimeKind.Local).AddTicks(4837),
-                            FechaCreacion = new DateTime(2023, 6, 21, 17, 18, 9, 86, DateTimeKind.Local).AddTicks(4837),
+                            FechaActualiazcion = new DateTime(2023, 6, 22, 10, 26, 53, 724, DateTimeKind.Local).AddTicks(7576),
+                            FechaCreacion = new DateTime(2023, 6, 22, 10, 26, 53, 724, DateTimeKind.Local).AddTicks(7575),
                             ImagenUrl = "",
                             MetrosCuadrados = 40.0,
                             Nombre = "Premium vista a la piscina",
