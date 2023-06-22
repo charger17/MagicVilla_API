@@ -106,7 +106,10 @@ namespace MagicVilla_API.Controllers
                 if (await _numeroVillaRepository.Obtener(v => v.VillaNo.Equals(createDto.VillaNo), tracked: false) != null)
                 {
                     ModelState.AddModelError("NombreExiste", "La villa con ese numero ya Existe");
-                    return BadRequest(ModelState);
+                    _response.statusCode = HttpStatusCode.BadRequest;
+                    _response.ErrorMessages = new List<string>() { "La villa con ese numero ya Existe" };
+                    _response.IsExitoso = false;
+                    return BadRequest(_response);
                 }
 
                 if (await _villaRepository.Obtener(v => v.Id.Equals(createDto.VillaId)) == null)
