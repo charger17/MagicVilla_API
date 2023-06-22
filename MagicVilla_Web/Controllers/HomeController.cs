@@ -27,7 +27,7 @@ namespace MagicVilla_Web.Controllers
             
             List<VillaDto> villaList = new();
 
-            var response = await _villaService.ObtenerTodos<APIResponse>();
+            var response = await _villaService.ObtenerTodos<APIResponse>(HttpContext.Session.GetString(DS.Seesiontoken));
 
             if (response != null && response.IsExitoso)
             {
