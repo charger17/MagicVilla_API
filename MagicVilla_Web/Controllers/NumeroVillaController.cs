@@ -152,5 +152,66 @@ namespace MagicVilla_Web.Controllers
 
             return View(modelo);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> RemoverNumeroVilla(int villaNo)
+        {
+            NumeroVillaDeleteViewModel numeroVillaVM = new NumeroVillaDeleteViewModel();
+            var response = await _numeroVillaService.Obtener<APIResponse>(villaNo);
+
+            if (response is not null && response.IsExitoso)
+            {
+                NumeroVillaDto modelo = JsonConvert.DeserializeObject<NumeroVillaDto>(Convert.ToString(response.Resultado));
+                numeroVillaVM.NumeroVilla = modelo;
+            }
+
+            response = await _villaService.ObtenerTodos<APIResponse>();
+
+            if (response is not null && response.IsExitoso)
+            {
+                numeroVillaVM.VillaList = JsonConvert.DeserializeObject<List<VillaDto>>(Convert.ToString(response.Resultado)).Select(v => new SelectListItem
+                {
+                    Text = v.Nombre,
+                    Value = v.Id.ToString()
+                });
+                return View(numeroVillaVM);
+            }
+
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoverNumeroVilla(NumeroVillaUpdateViewModel modelo)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await _numeroVillaService.Actualizar<APIResponse>(modelo.NumeroVilla);
+
+                if (response is not null && response.IsExitoso)
+                {
+                    return RedirectToAction(nameof(IndexNumerovilla));
+                }
+                else
+                {
+                    if (response.ErrorMessages.Count > 0)
+                    {
+                        ModelState.AddModelError("ErrorMessage", response.ErrorMessages.FirstOrDefault());
+                    }
+                }
+            }
+
+            var res = await _villaService.ObtenerTodos<APIResponse>();
+
+            if (res is not null && res.IsExitoso)
+            {
+                modelo.VillaList = JsonConvert.DeserializeObject<List<VillaDto>>(Convert.ToString(res.Resultado)).Select(v => new SelectListItem
+                {
+                    Text = v.Nombre,
+                    Value = v.Id.ToString()
+                });
+            }
+
+            return View(modelo);
+        }
     }
 }
