@@ -35,7 +35,7 @@ namespace MagicVilla_API.Controllers
             {
                 _logger.LogInformation("Obtener Numero de villas");
 
-                IEnumerable<NumeroVilla> numeroVillasList = await _numeroVillaRepository.Obtenertodos();
+                IEnumerable<NumeroVilla> numeroVillasList = await _numeroVillaRepository.Obtenertodos(includeProperties: "Villa");
 
                 _response.Resultado = _mapper.Map<IEnumerable<NumeroVillaDto>>(numeroVillasList);
                 _response.statusCode = HttpStatusCode.OK;
@@ -66,7 +66,7 @@ namespace MagicVilla_API.Controllers
                     return _response;
                 }
 
-                var numeroVilla = await _numeroVillaRepository.Obtener(x => x.VillaNo.Equals(id), tracked: false);
+                var numeroVilla = await _numeroVillaRepository.Obtener(x => x.VillaNo.Equals(id), tracked: false, includeProperties: "Villa");
 
                 if (numeroVilla is null)
                 {

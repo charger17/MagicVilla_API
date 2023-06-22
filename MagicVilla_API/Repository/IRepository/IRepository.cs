@@ -6,9 +6,9 @@ namespace MagicVilla_API.Repository.IRepository
     {
         Task Crear(T entity);
 
-        Task<List<T>> Obtenertodos(Expression<Func<T, bool>>? filtro = null);
+        Task<List<T>> Obtenertodos(Expression<Func<T, bool>>? filtro = null, string? includeProperties = null);
 
-        Task<T> Obtener(Expression<Func<T, bool>> filtro = null, bool tracked = true);
+        Task<T> Obtener(Expression<Func<T, bool>> filtro = null, bool tracked = true, string? includeProperties = null);
 
         Task Remover(T entity);
 

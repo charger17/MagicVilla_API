@@ -26,26 +26,40 @@ namespace MagicVilla_API.Repository
             await _db.SaveChangesAsync();
         }
 
-        public async Task<T> Obtener(System.Linq.Expressions.Expression<Func<T, bool>> filtro = null, bool tracked = true)
+        public async Task<T> Obtener(System.Linq.Expressions.Expression<Func<T, bool>> filtro = null, bool tracked = true, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
             if (!tracked)
             {
                 query = query.AsNoTracking();
             }
-            if(filtro != null)
+            if (filtro != null)
             {
                 query = query.Where(filtro);
+            }
+            if (includeProperties != null)
+            {
+                foreach (var item in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(item);
+                }
             }
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<List<T>> Obtenertodos(System.Linq.Expressions.Expression<Func<T, bool>>? filtro = null)
+        public async Task<List<T>> Obtenertodos(System.Linq.Expressions.Expression<Func<T, bool>>? filtro = null, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
             if (filtro != null)
             {
                 query = query.Where(filtro);
+            }
+            if (includeProperties != null)
+            {
+                foreach (var item in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(item);
+                }
             }
             return await query.ToListAsync();
         }
