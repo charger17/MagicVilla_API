@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Web;
 
 namespace MagicVilla_Web.Services
 {
@@ -28,7 +29,23 @@ namespace MagicVilla_Web.Services
                 var client = _httpClient.CreateClient("MagicAPI");
                 HttpRequestMessage message = new HttpRequestMessage();
                 message.Headers.Add("Accept", "application/json");
-                message.RequestUri = new Uri(apiRequest.Url);
+
+                if (apiRequest.Parametros is null)
+                {
+                    message.RequestUri = new Uri(apiRequest.Url);
+                }
+                else
+                {
+                    var builder = new UriBuilder(apiRequest.Url);
+                    var query = HttpUtility.ParseQueryString(builder.Query);
+                    query["PageNumber"] = apiRequest.Parametros.PageNumber.ToString();
+                    query["PageSize"] = apiRequest.Parametros.PageSize.ToString();
+                    builder.Query = query.ToString();
+                    string url = builder.ToString();
+                    message.RequestUri = new Uri(url);
+                }
+
+               
 
                 if (apiRequest.Datos is not null)
                 {
