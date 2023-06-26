@@ -57,7 +57,7 @@ namespace MagicVilla_API.Repository
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, usuario.Id.ToString()),
+                    new Claim(ClaimTypes.Name, usuario.UserName),
                     new Claim(ClaimTypes.Role, roles.FirstOrDefault()),
 
                 }),
@@ -71,7 +71,7 @@ namespace MagicVilla_API.Repository
             {
                 Token = tokenHandler.WriteToken(token),
                 Usuario = _mapper.Map<UsuarioDto>(usuario),
-                Rol = roles.FirstOrDefault()
+                
             };
 
             return loginResponseDTO;
