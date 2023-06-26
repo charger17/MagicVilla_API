@@ -45,16 +45,16 @@ namespace MagicVilla_Web.Controllers
                     //Claims
                     var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
                     identity.AddClaim(new Claim(ClaimTypes.Name, jwt.Claims.FirstOrDefault(c => c.Type == "unique_name").Value));
-                    identity.AddClaim(new Claim(ClaimTypes.Name, jwt.Claims.FirstOrDefault(c => c.Type == "role").Value));
+                    identity.AddClaim(new Claim(ClaimTypes.Role, jwt.Claims.FirstOrDefault(c => c.Type == "role").Value));
                     var principal = new ClaimsPrincipal(identity);
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-                    //Session
+                    // Session
                     HttpContext.Session.SetString(DS.Seesiontoken, loginResponse.Token);
                     return RedirectToAction("Index", "Home");
                 }
 
-                ModelState.AddModelError("ErroMessage", response.ErrorMessages.FirstOrDefault());
+                ModelState.AddModelError("ErrorMessage", response.ErrorMessages.FirstOrDefault());
             }
 
             return View(modelo);
