@@ -4,7 +4,7 @@ namespace MagicVilla_API.Models
 {
     public class APIResponse
     {
-        public APIResponse() 
+        public APIResponse()
         {
             ErrorMessages = new List<string>();
         }
@@ -16,5 +16,7 @@ namespace MagicVilla_API.Models
         public List<string> ErrorMessages { get; set; }
 
         public object Resultado { get; set; }
+
+        public int TotalPaginas { get; set; }
     }
 }
